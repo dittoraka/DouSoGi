@@ -168,48 +168,189 @@ namespace DouSoGi
 
         void generate_move(Tiles a)
         {
-            int y = a.X/50;
-            int x = a.Y/50;
+            int y = a.X / 50;
+            int x = a.Y / 50;
             if (x + 1 < 9)
             {
-                if (get_value(tiles[x, y].Value) > get_value(tiles[x + 1, y].Value))
+                if (editiles[x + 1, y].Value == "den" && editiles[x + 1, y].Isplayer != player)
                 {
-                    emove = tiles[x + 1, y];
+                    emove = editiles[x + 1, y];
+                }
+                else if (editiles[x + 1, y].Value == "trap" && editiles[x + 1, y].Isplayer != player)
+                {
+                    emove = editiles[x + 1, y];
+                }
+                else if (editiles[x, y].Value == "mouse")
+                {
+                    if (editiles[x + 1, y].Value == "elephant")
+                    {
+                        emove = editiles[x + 1, y];
+                    }
+                    else if (editiles[x + 1, y].Value == "water")
+                    {
+                        emove = editiles[x + 1, y];
+                    }
+                    else
+                    {
+                        emove = editiles[x + 1, y];
+                    }
+                }
+                else if ((editiles[x, y].Value == "tiger" || editiles[x, y].Value == "lion") && editiles[x + 1, y].Value == "water")
+                {
+                    if (x + 3 < 9)
+                    {
+                        if (get_value(editiles[x, y].Value) > get_value(editiles[x + 3, y].Value))
+                        {
+                            emove = editiles[x + 3, y];
+                        }
+                    }
+                }
+                else
+                {
+                    if (get_value(editiles[x, y].Value) > get_value(editiles[x + 1, y].Value))
+                    {
+                        emove = editiles[x + 1, y];
+                    }
                 }
             }
-            if (x - 1 >= 0) { 
-                if (get_value(tiles[x, y].Value) > get_value(tiles[x - 1, y].Value))
+            if (x - 1 >= 0)
+            {
+                if (editiles[x - 1, y].Value == "den" && editiles[x - 1, y].Isplayer != player)
                 {
-                    emove = tiles[x - 1, y];
+                    emove = editiles[x - 1, y];
+                }
+                else if (editiles[x - 1, y].Value == "trap" && editiles[x - 1, y].Isplayer != player)
+                {
+                    emove = editiles[x - 1, y];
+                }
+                else if (editiles[x, y].Value == "mouse")
+                {
+                    if (editiles[x - 1, y].Value == "elephant")
+                    {
+                        emove = editiles[x - 1, y];
+                    }
+                    else if (editiles[x - 1, y].Value == "water")
+                    {
+                        emove = editiles[x - 1, y];
+                    }
+                    else
+                    {
+                        emove = editiles[x - 1, y];
+                    }
+                }
+                else if ((editiles[x, y].Value == "tiger" || editiles[x, y].Value == "lion") && editiles[x - 1, y].Value == "water")
+                {
+                    if (x - 3 >= 0)
+                    {
+                        if (get_value(editiles[x, y].Value) > get_value(editiles[x - 3, y].Value))
+                        {
+                            emove = editiles[x - 3, y];
+                        }
+                    }
+                }
+                else
+                {
+                    if (get_value(editiles[x, y].Value) > get_value(editiles[x - 1, y].Value))
+                    {
+                        emove = editiles[x - 1, y];
+                    }
                 }
             }
             if (y + 1 < 7)
             {
-                if (get_value(tiles[x, y].Value) > get_value(tiles[x, y + 1].Value))
+                if (editiles[x, y + 1].Value == "den" && editiles[x, y + 1].Isplayer != player)
                 {
-                    emove = tiles[x, y + 1];
+                    emove = editiles[x, y + 1];
+                }
+                else if (editiles[x, y + 1].Value == "trap" && editiles[x, y + 1].Isplayer != player)
+                {
+                    emove = editiles[x, y + 1];
+                }
+                else if (editiles[x, y + 1].Value == "mouse")
+                {
+                    if (editiles[x, y + 1].Value == "elephant")
+                    {
+                        emove = editiles[x, y + 1];
+                    }
+                    else if (editiles[x, y + 1].Value == "water")
+                    {
+                        emove = editiles[x, y + 1];
+                    }
+                    else
+                    {
+                        emove = editiles[x, y + 1];
+                    }
+                }
+                else if ((editiles[x, y].Value == "tiger" || editiles[x, y].Value == "lion") && editiles[x, y + 1].Value == "water")
+                {
+                    if (get_value(editiles[x, y].Value) > get_value(editiles[x, y + 4].Value))
+                    {
+                        emove = editiles[x, y + 4];
+                    }
+                }
+                else
+                {
+                    if (get_value(editiles[x, y].Value) > get_value(editiles[x, y + 1].Value))
+                    {
+                        emove = editiles[x, y + 1];
+                    }
                 }
             }
             if (y - 1 >= 0)
             {
-                if (get_value(tiles[x, y].Value) > get_value(tiles[x, y - 1].Value))
+                if (editiles[x, y - 1].Value == "den" && editiles[x, y - 1].Isplayer != player)
                 {
-                    emove = tiles[x, y - 1];
+                    emove = editiles[x, y - 1];
+                }
+                else if (editiles[x, y - 1].Value == "trap" && editiles[x, y - 1].Isplayer != player)
+                {
+                    emove = editiles[x, y - 1];
+                }
+                else if (editiles[x, y - 1].Value == "mouse")
+                {
+                    if (editiles[x, y - 1].Value == "elephant")
+                    {
+                        emove = editiles[x, y - 1];
+                    }
+                    else if (editiles[x, y - 1].Value == "water")
+                    {
+                        emove = editiles[x, y - 1];
+                    }
+                    else
+                    {
+                        emove = editiles[x, y - 1];
+                    }
+                }
+                else if ((editiles[x, y].Value == "tiger" || editiles[x, y].Value == "lion") && editiles[x, y - 1].Value == "water")
+                {
+                    if (get_value(editiles[x, y].Value) > get_value(editiles[x, y - 4].Value))
+                    {
+                        emove = editiles[x, y - 4];
+                    }
+                }
+                else
+                {
+                    if (get_value(editiles[x, y].Value) > get_value(editiles[x, y - 1].Value))
+                    {
+                        emove = editiles[x, y - 1];
+                    }
                 }
             }
         }
 
         public int get_value(string tile)
         {
-            if (tile == "rat"){return 1;}
-            else if (tile == "cat"){return 2;}
-            else if (tile == "wolf"){return 3;}
-            else if (tile == "dog"){return 4;}
-            else if (tile == "leo"){return 5;}
-            else if (tile == "tiger"){return 6;}
-            else if (tile == "lion"){return 7;}
-            else if (tile == "elephant"){return 8;}
-            else{return 0;}
+            if (tile == "rat") { return 1; }
+            else if (tile == "cat") { return 2; }
+            else if (tile == "wolf") { return 3; }
+            else if (tile == "dog") { return 4; }
+            else if (tile == "leo") { return 5; }
+            else if (tile == "tiger") { return 6; }
+            else if (tile == "lion") { return 7; }
+            else if (tile == "elephant") { return 8; }
+            else if (tile == "trap") { return 9; }
+            else if (tile == "den") { return 10; }
+            else { return 0; }
         }
 
         void refresh_button() { //refresh gambar pada button, anggap seperti Invalidate();
