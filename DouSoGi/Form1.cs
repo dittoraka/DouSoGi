@@ -13,7 +13,7 @@ namespace DouSoGi
     public partial class Form1 : Form
     {
         Tiles[,] tiles = new Tiles[9,7];
-        //Tiles[,] editiles = new Tiles[9, 7];
+        Tiles[,] edittiles = new Tiles[9, 7];
         Button[,] b = new Button[9,7];
         //temporary x dan y untuk index character
         int xtemp = -1;
@@ -25,6 +25,7 @@ namespace DouSoGi
         List<Tiles> enemy;
         List<Tiles> user;
         Tiles possibility,emove;
+        List<Tiles> listMove = new List<Tiles>();
 
         public Form1()
         {
@@ -34,12 +35,25 @@ namespace DouSoGi
             set_tiles();
             set_button();
         }
+
+        bool check_win(Tiles a, Tiles b) {
+            if (get_value(a.Value) > get_value(b.Value))
+            {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+
         void button_click(object sender, EventArgs e) { //fungsi button click 
             if (turnstrip.Text != "")
             {
                 Button bt = (Button)sender;
                 int X = bt.Location.X / 50;
                 int Y = bt.Location.Y / 50;
+
+                MessageBox.Show(tiles[Y, X].Value);
 
                 if (tiles[Y, X].Ismoveable == true)
                 {
@@ -102,7 +116,7 @@ namespace DouSoGi
                     }
 
                     //turn musuh
-                    //editiles = tiles;
+                    edittiles = tiles;
                     enemy_turn();
                     enemy.Clear();
                     user.Clear();
@@ -120,17 +134,18 @@ namespace DouSoGi
         }
 
         void enemy_turn() {
-            int bestMove = -9999;
+            int bestMove = -99999;
             for (int i = 0; i < enemy.Count(); i++)
             {
-                int bestVal = minimax(3, false, tiles);
-
-                if (bestVal >= bestMove) {
+                int bestVal = minimax(3, false, edittiles);
+                MessageBox.Show(bestVal+"");
+                if (bestVal > bestMove)
+                {
                     bestMove = bestVal;
                     possibility = enemy[i];
                 }
             }
-            b[possibility.Y/50,possibility.X/50].BackColor = Color.White;
+            b[possibility.Y/50,possibility.X/50].BackColor = Color.Cyan;
         }
 
         //algoritma minimax
@@ -143,14 +158,13 @@ namespace DouSoGi
                 int max = -99999;
                 for (int i = 0; i < enemy.Count(); i++)
                 {
-                    //rasanya salah di generate_move :/
                     generate_move(enemy[i], maps);
-                    maps[emove.Y/50, emove.X/50] = emove;
-                    int bestMove = Math.Max(max, minimax(depth - 1, false, maps));
-
-                    if (bestMove > max) {
-                        max = bestMove;
+                    for (int j = 0; j< listMove.Count; j++) {
+                        maps[listMove[j].Y / 50, listMove[j].X / 50] = enemy[i];
+                        //maps[enemy[i].Y / 50, enemy[i].X / 50] = new Tiles(enemy[i].X, enemy[i].Y, "grass", false, false, Image.FromFile("grass.jpg"));
+                        max = Math.Max(max, minimax(depth - 1, false, maps));
                     }
+                    listMove.Clear();
                 }
                 return max;
             }
@@ -162,22 +176,22 @@ namespace DouSoGi
                 int min = 99999;
                 for (int i = 0; i < user.Count(); i++)
                 {
-                    //rasanya salah di generate_move :/
                     generate_move(user[i], maps);
-                    maps[emove.Y/50, emove.X/50] = emove;
-                    int bestMove = Math.Min(min, minimax(depth - 1, true, maps));
-
-                    if (bestMove < min)
+                    for (int j = 0; j < listMove.Count; j++)
                     {
-                        min = bestMove;
+                        maps[listMove[j].Y / 50, listMove[j].X / 50] = user[i];
+                        //maps[user[i].Y / 50, user[i].X / 50] = new Tiles(user[i].X, user[i].Y, "grass", false, false, Image.FromFile("grass.jpg"));
+                        min = Math.Min(min, minimax(depth - 1, false, maps));
                     }
+                    listMove.Clear();
                 }
                 return min;
             }
+            
         }
         //evaluasi papan di akhir depth
         int evaluate(Tiles[,] maps) {
-            int value = 0;
+            int value = 0;  
             for (int i = 0; i < 9; i++)
             {
                 for (int j = 0; j < 7; j++)
@@ -187,6 +201,7 @@ namespace DouSoGi
             }
             return value;
         }
+        
         //generate move yang bisa dilakukan oleh AI (Rasanya ada yang salah disini.)
         void generate_move(Tiles a, Tiles[,] editiles)
         {
@@ -196,25 +211,25 @@ namespace DouSoGi
             {
                 if (editiles[x + 1, y].Value == "den" && editiles[x + 1, y].Isplayer != player)
                 {
-                    emove = editiles[x + 1, y];
+                    listMove.Add(editiles[x + 1, y]);
                 }
                 else if (editiles[x + 1, y].Value == "trap" && editiles[x + 1, y].Isplayer != player)
                 {
-                    emove = editiles[x + 1, y];
+                    listMove.Add(editiles[x + 1, y]);
                 }
                 else if (editiles[x, y].Value == "mouse")
                 {
                     if (editiles[x + 1, y].Value == "elephant")
                     {
-                        emove = editiles[x + 1, y];
+                        listMove.Add(editiles[x + 1, y]);
                     }
                     else if (editiles[x + 1, y].Value == "water")
                     {
-                        emove = editiles[x + 1, y];
+                        listMove.Add(editiles[x + 1, y]);
                     }
                     else
                     {
-                        emove = editiles[x + 1, y];
+                        listMove.Add(editiles[x + 1, y]);
                     }
                 }
                 else if ((editiles[x, y].Value == "tiger" || editiles[x, y].Value == "lion") && editiles[x + 1, y].Value == "water")
@@ -223,7 +238,7 @@ namespace DouSoGi
                     {
                         if (get_value(editiles[x, y].Value) > get_value(editiles[x + 3, y].Value))
                         {
-                            emove = editiles[x + 3, y];
+                            listMove.Add(editiles[x + 3, y]);
                         }
                     }
                 }
@@ -231,7 +246,7 @@ namespace DouSoGi
                 {
                     if (get_value(editiles[x, y].Value) > get_value(editiles[x + 1, y].Value))
                     {
-                        emove = editiles[x + 1, y];
+                        listMove.Add(editiles[x + 1, y]);
                     }
                 }
             }
@@ -239,25 +254,25 @@ namespace DouSoGi
             {
                 if (editiles[x - 1, y].Value == "den" && editiles[x - 1, y].Isplayer != player)
                 {
-                    emove = editiles[x - 1, y];
+                    listMove.Add(editiles[x - 1, y]);
                 }
                 else if (editiles[x - 1, y].Value == "trap" && editiles[x - 1, y].Isplayer != player)
                 {
-                    emove = editiles[x - 1, y];
+                    listMove.Add(editiles[x - 1, y]);
                 }
                 else if (editiles[x, y].Value == "mouse")
                 {
                     if (editiles[x - 1, y].Value == "elephant")
                     {
-                        emove = editiles[x - 1, y];
+                        listMove.Add(editiles[x - 1, y]);
                     }
                     else if (editiles[x - 1, y].Value == "water")
                     {
-                        emove = editiles[x - 1, y];
+                        listMove.Add(editiles[x - 1, y]);
                     }
                     else
                     {
-                        emove = editiles[x - 1, y];
+                        listMove.Add(editiles[x - 1, y]);
                     }
                 }
                 else if ((editiles[x, y].Value == "tiger" || editiles[x, y].Value == "lion") && editiles[x - 1, y].Value == "water")
@@ -266,7 +281,7 @@ namespace DouSoGi
                     {
                         if (get_value(editiles[x, y].Value) > get_value(editiles[x - 3, y].Value))
                         {
-                            emove = editiles[x - 3, y];
+                            listMove.Add(editiles[x - 3, y]);
                         }
                     }
                 }
@@ -274,7 +289,7 @@ namespace DouSoGi
                 {
                     if (get_value(editiles[x, y].Value) > get_value(editiles[x - 1, y].Value))
                     {
-                        emove = editiles[x - 1, y];
+                        listMove.Add(editiles[x - 1, y]);
                     }
                 }
             }
@@ -282,39 +297,39 @@ namespace DouSoGi
             {
                 if (editiles[x, y + 1].Value == "den" && editiles[x, y + 1].Isplayer != player)
                 {
-                    emove = editiles[x, y + 1];
+                    listMove.Add(editiles[x, y + 1]);
                 }
                 else if (editiles[x, y + 1].Value == "trap" && editiles[x, y + 1].Isplayer != player)
                 {
-                    emove = editiles[x, y + 1];
+                    listMove.Add(editiles[x, y + 1]);
                 }
                 else if (editiles[x, y + 1].Value == "mouse")
                 {
                     if (editiles[x, y + 1].Value == "elephant")
                     {
-                        emove = editiles[x, y + 1];
+                        listMove.Add(editiles[x, y + 1]);
                     }
                     else if (editiles[x, y + 1].Value == "water")
                     {
-                        emove = editiles[x, y + 1];
+                        listMove.Add(editiles[x, y + 1]);
                     }
                     else
                     {
-                        emove = editiles[x, y + 1];
+                        listMove.Add(editiles[x, y + 1]);
                     }
                 }
                 else if ((editiles[x, y].Value == "tiger" || editiles[x, y].Value == "lion") && editiles[x, y + 1].Value == "water")
                 {
                     if (get_value(editiles[x, y].Value) > get_value(editiles[x, y + 4].Value))
                     {
-                        emove = editiles[x, y + 4];
+                        listMove.Add(editiles[x, y + 4]);
                     }
                 }
                 else
                 {
                     if (get_value(editiles[x, y].Value) > get_value(editiles[x, y + 1].Value))
                     {
-                        emove = editiles[x, y + 1];
+                        listMove.Add(editiles[x, y + 1]);
                     }
                 }
             }
@@ -322,39 +337,39 @@ namespace DouSoGi
             {
                 if (editiles[x, y - 1].Value == "den" && editiles[x, y - 1].Isplayer != player)
                 {
-                    emove = editiles[x, y - 1];
+                    listMove.Add(editiles[x, y - 1]);
                 }
                 else if (editiles[x, y - 1].Value == "trap" && editiles[x, y - 1].Isplayer != player)
                 {
-                    emove = editiles[x, y - 1];
+                    listMove.Add(editiles[x, y - 1]);
                 }
                 else if (editiles[x, y - 1].Value == "mouse")
                 {
                     if (editiles[x, y - 1].Value == "elephant")
                     {
-                        emove = editiles[x, y - 1];
+                        listMove.Add(editiles[x, y - 1]);
                     }
                     else if (editiles[x, y - 1].Value == "water")
                     {
-                        emove = editiles[x, y - 1];
+                        listMove.Add(editiles[x, y - 1]);
                     }
                     else
                     {
-                        emove = editiles[x, y - 1];
+                        listMove.Add(editiles[x, y - 1]);
                     }
                 }
                 else if ((editiles[x, y].Value == "tiger" || editiles[x, y].Value == "lion") && editiles[x, y - 1].Value == "water")
                 {
                     if (get_value(editiles[x, y].Value) > get_value(editiles[x, y - 4].Value))
                     {
-                        emove = editiles[x, y - 4];
+                        listMove.Add(editiles[x, y - 4]);
                     }
                 }
                 else
                 {
                     if (get_value(editiles[x, y].Value) > get_value(editiles[x, y - 1].Value))
                     {
-                        emove = editiles[x, y - 1];
+                        listMove.Add(editiles[x, y - 1]);
                     }
                 }
             }
@@ -527,6 +542,7 @@ namespace DouSoGi
             player = true;
             turnstrip.Text = "Player : Red";
             us_or_foe();
+            enemy_turn();
         }
 
         public void us_or_foe() {
