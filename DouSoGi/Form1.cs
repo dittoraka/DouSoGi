@@ -21,6 +21,9 @@ namespace DouSoGi
         //bool player untuk menunjukkan player berada di team mana : blue atau red. 
         //jika false maka player ada di team blue, jika true maka player ada di team red
         bool player=true,Isclicked = false,turn;
+
+        //bool mauJalan untuk tau apakah  player lagi klik binatang atau tidak
+        bool mauJalan = false;
         //buat AI nya
         List<Tiles> enemy;
         List<Tiles> user;
@@ -45,6 +48,7 @@ namespace DouSoGi
                 if (tiles[Y, X].Ismoveable == true)
                 {
                     if (tiles[Y, X].Isplayer == player) {
+                        mauJalan = true;
                         if (Isclicked == false)
                         {
                             xtemp = X;
@@ -71,12 +75,23 @@ namespace DouSoGi
                 else
                 {
                     if (tiles[Y, X].Ismoveable == false) {
-                        tiles[Y, X] = new Tiles(X * 50, Y * 50, tiles[ytemp, xtemp].Value, true, player, tiles[ytemp, xtemp].Animal);
-                        tiles[ytemp, xtemp].Animal = Image.FromFile("grass.jpg");
-                        tiles[ytemp, xtemp].Value = "grass";
-                        tiles[ytemp, xtemp].Ismoveable = false;
-                        tiles[ytemp, xtemp].Isplayer = false;
-                        b[Y, X].BackgroundImage = tiles[Y, X].Animal;
+                        if (mauJalan)
+                        {
+                            tiles[Y, X] = new Tiles(X * 50, Y * 50, tiles[ytemp, xtemp].Value, true, player, tiles[ytemp, xtemp].Animal);
+                            tiles[ytemp, xtemp].Animal = Image.FromFile("grass.jpg");
+                            tiles[ytemp, xtemp].Value = "grass";
+                            tiles[ytemp, xtemp].Ismoveable = false;
+                            tiles[ytemp, xtemp].Isplayer = false;
+                            b[Y, X].BackgroundImage = tiles[Y, X].Animal;
+                            if (tiles[Y, X].Isplayer == false)
+                            {
+                                b[Y, X].BackColor = Color.Blue;
+                            }
+                            else
+                            {
+                                b[Y, X].BackColor = Color.Red;
+                            }
+                        }
                     }
                     else{
                         /*
@@ -247,6 +262,11 @@ namespace DouSoGi
                     Controls.Add(b[i, j]);
                 }
             }
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
         }
 
         void set_tiles() {

@@ -8,3 +8,12 @@ C:\Users\RakaBagas\source\repos\DouSoGi\DouSoGi\obj\Debug\DouSoGi.csproj.Generat
 C:\Users\RakaBagas\source\repos\DouSoGi\DouSoGi\obj\Debug\DouSoGi.exe
 C:\Users\RakaBagas\source\repos\DouSoGi\DouSoGi\obj\Debug\DouSoGi.pdb
 C:\Users\RakaBagas\source\repos\DouSoGi\DouSoGi\obj\Debug\DouSoGi.csproj.CoreCompileInputs.cache
+E:\Kuliah\Semester 5\AI\proyek\DouSoGi\bin\Debug\DouSoGi.exe.config
+E:\Kuliah\Semester 5\AI\proyek\DouSoGi\bin\Debug\DouSoGi.exe
+E:\Kuliah\Semester 5\AI\proyek\DouSoGi\bin\Debug\DouSoGi.pdb
+E:\Kuliah\Semester 5\AI\proyek\DouSoGi\obj\Debug\DouSoGi.csprojAssemblyReference.cache
+E:\Kuliah\Semester 5\AI\proyek\DouSoGi\obj\Debug\DouSoGi.Form1.resources
+E:\Kuliah\Semester 5\AI\proyek\DouSoGi\obj\Debug\DouSoGi.Properties.Resources.resources
+E:\Kuliah\Semester 5\AI\proyek\DouSoGi\obj\Debug\DouSoGi.csproj.GenerateResource.cache
+E:\Kuliah\Semester 5\AI\proyek\DouSoGi\obj\Debug\DouSoGi.exe
+E:\Kuliah\Semester 5\AI\proyek\DouSoGi\obj\Debug\DouSoGi.pdb

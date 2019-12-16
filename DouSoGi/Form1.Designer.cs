@@ -64,20 +64,20 @@
             this.firstTurnToolStripMenuItem,
             this.secondTurnToolStripMenuItem});
             this.chooseTurnToolStripMenuItem.Name = "chooseTurnToolStripMenuItem";
-            this.chooseTurnToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.chooseTurnToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.chooseTurnToolStripMenuItem.Text = "Choose Team";
             // 
             // firstTurnToolStripMenuItem
             // 
             this.firstTurnToolStripMenuItem.Name = "firstTurnToolStripMenuItem";
-            this.firstTurnToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.firstTurnToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
             this.firstTurnToolStripMenuItem.Text = "Team Blue";
             this.firstTurnToolStripMenuItem.Click += new System.EventHandler(this.firstTurnToolStripMenuItem_Click);
             // 
             // secondTurnToolStripMenuItem
             // 
             this.secondTurnToolStripMenuItem.Name = "secondTurnToolStripMenuItem";
-            this.secondTurnToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.secondTurnToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
             this.secondTurnToolStripMenuItem.Text = "Team Red";
             this.secondTurnToolStripMenuItem.Click += new System.EventHandler(this.secondTurnToolStripMenuItem_Click);
             // 
@@ -112,6 +112,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
