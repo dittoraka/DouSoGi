@@ -13,7 +13,7 @@ namespace DouSoGi
     public partial class Form1 : Form
     {
         Tiles[,] tiles = new Tiles[9,7];
-        Tiles[,] editiles = new Tiles[9, 7];
+        //Tiles[,] editiles = new Tiles[9, 7];
         Button[,] b = new Button[9,7];
         //temporary x dan y untuk index character
         int xtemp = -1;
@@ -25,7 +25,6 @@ namespace DouSoGi
         List<Tiles> enemy;
         List<Tiles> user;
         Tiles possibility,emove;
-        int maxValue = -0, minValue = 9999;
 
         public Form1()
         {
@@ -73,6 +72,14 @@ namespace DouSoGi
                     if (tiles[Y, X].Ismoveable == false) {
                         tiles[Y, X] = new Tiles(X * 50, Y * 50, tiles[ytemp, xtemp].Value, true, player, tiles[ytemp, xtemp].Animal);
                         tiles[ytemp, xtemp].Animal = Image.FromFile("grass.jpg");
+                        if (tiles[Y, X].Isplayer == false)
+                        {
+                            b[Y, X].BackColor = Color.Blue;
+                        }
+                        else
+                        {
+                            b[Y, X].BackColor = Color.Red;
+                        }
                         tiles[ytemp, xtemp].Value = "grass";
                         tiles[ytemp, xtemp].Ismoveable = false;
                         tiles[ytemp, xtemp].Isplayer = false;
@@ -95,7 +102,7 @@ namespace DouSoGi
                     }
 
                     //turn musuh
-                    editiles = tiles;
+                    //editiles = tiles;
                     enemy_turn();
                     enemy.Clear();
                     user.Clear();
@@ -116,57 +123,72 @@ namespace DouSoGi
             int bestMove = -9999;
             for (int i = 0; i < enemy.Count(); i++)
             {
-                int bestVal = minimax(3, false);
+                int bestVal = minimax(3, false, tiles);
 
                 if (bestVal >= bestMove) {
                     bestMove = bestVal;
                     possibility = enemy[i];
                 }
             }
-            tiles[emove.Y / 50, emove.X / 50] = tiles[possibility.Y/50,possibility.X/50];
+            b[possibility.Y/50,possibility.X/50].BackColor = Color.White;
         }
 
-        
-        int minimax(int depth, bool isMax) {
-            if (depth == 0) {
-                return -evaluate();
-            }
+        //algoritma minimax
+        int minimax(int depth, bool isMax, Tiles[,] maps) {
             if (isMax) {
-                int bestMove = -9999;
+                if (depth == 0)
+                {
+                    return evaluate(maps);
+                }
+                int max = -99999;
                 for (int i = 0; i < enemy.Count(); i++)
                 {
-                    generate_move(enemy[i]);
-                    editiles[emove.Y/50, emove.X/50] = emove;
-                    bestMove = Math.Max(bestMove, minimax(depth - 1, false));
+                    //rasanya salah di generate_move :/
+                    generate_move(enemy[i], maps);
+                    maps[emove.Y/50, emove.X/50] = emove;
+                    int bestMove = Math.Max(max, minimax(depth - 1, false, maps));
+
+                    if (bestMove > max) {
+                        max = bestMove;
+                    }
                 }
-                return bestMove;
+                return max;
             }
             else {
-                int bestMove = 9999;
-
+                if (depth == 0)
+                {
+                    return -evaluate(maps);
+                }
+                int min = 99999;
                 for (int i = 0; i < user.Count(); i++)
                 {
-                    generate_move(user[i]);
-                    editiles[emove.Y/50, emove.X/50] = emove;
-                    bestMove = Math.Min(bestMove, minimax(depth - 1, true));
+                    //rasanya salah di generate_move :/
+                    generate_move(user[i], maps);
+                    maps[emove.Y/50, emove.X/50] = emove;
+                    int bestMove = Math.Min(min, minimax(depth - 1, true, maps));
+
+                    if (bestMove < min)
+                    {
+                        min = bestMove;
+                    }
                 }
-                return bestMove;
+                return min;
             }
         }
-
-        public int evaluate() {
+        //evaluasi papan di akhir depth
+        int evaluate(Tiles[,] maps) {
             int value = 0;
             for (int i = 0; i < 9; i++)
             {
                 for (int j = 0; j < 7; j++)
                 {
-                    value += get_value(editiles[i,j].Value);
+                    value += get_value(maps[i,j].Value);
                 }
             }
             return value;
         }
-
-        void generate_move(Tiles a)
+        //generate move yang bisa dilakukan oleh AI (Rasanya ada yang salah disini.)
+        void generate_move(Tiles a, Tiles[,] editiles)
         {
             int y = a.X / 50;
             int x = a.Y / 50;
@@ -338,6 +360,11 @@ namespace DouSoGi
             }
         }
 
+        bool checkWin() {
+            
+            return false;
+        }
+
         public int get_value(string tile)
         {
             if (tile == "rat") { return 1; }
@@ -352,6 +379,7 @@ namespace DouSoGi
             else if (tile == "den") { return 10; }
             else { return 0; }
         }
+
 
         void refresh_button() { //refresh gambar pada button, anggap seperti Invalidate();
             for (int i = 0; i < 9; i++)
