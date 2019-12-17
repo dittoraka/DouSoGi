@@ -15,6 +15,7 @@ namespace DouSoGi
         Tiles[,] tiles = new Tiles[9,7];
         Tiles[,] edittiles = new Tiles[9, 7];
         Button[,] b = new Button[9,7];
+        private Random rnd = new Random();
         //temporary x dan y untuk index character
         int xtemp = -1;
         int ytemp = -1;
@@ -105,20 +106,20 @@ namespace DouSoGi
                                 b[Y, X].BackColor = Color.Red;
                             }
                         }
-                        tiles[Y, X] = new Tiles(X * 50, Y * 50, tiles[ytemp, xtemp].Value, true, player, tiles[ytemp, xtemp].Animal);
-                        tiles[ytemp, xtemp].Animal = Image.FromFile("grass.jpg");
-                        if (tiles[Y, X].Isplayer == false)
-                        {
-                            b[Y, X].BackColor = Color.Blue;
-                        }
-                        else
-                        {
-                            b[Y, X].BackColor = Color.Red;
-                        }
-                        tiles[ytemp, xtemp].Value = "grass";
-                        tiles[ytemp, xtemp].Ismoveable = false;
-                        tiles[ytemp, xtemp].Isplayer = false;
-                        b[Y, X].BackgroundImage = tiles[Y, X].Animal;
+                        //tiles[Y, X] = new Tiles(X * 50, Y * 50, tiles[ytemp, xtemp].Value, true, player, tiles[ytemp, xtemp].Animal);
+                        //tiles[ytemp, xtemp].Animal = Image.FromFile("grass.jpg");
+                        //if (tiles[Y, X].Isplayer == false)
+                        //{
+                        //    b[Y, X].BackColor = Color.Blue;
+                        //}
+                        //else
+                        //{
+                        //    b[Y, X].BackColor = Color.Red;
+                        //}
+                        //tiles[ytemp, xtemp].Value = "grass";
+                        //tiles[ytemp, xtemp].Ismoveable = false;
+                        //tiles[ytemp, xtemp].Isplayer = false;
+                        //b[Y, X].BackgroundImage = tiles[Y, X].Animal;
                     }
                     else{
                         /*
@@ -137,7 +138,8 @@ namespace DouSoGi
                     }
 
                     //turn musuh
-                    edittiles = tiles;
+
+                    set_edit();
                     enemy_turn();
                     enemy.Clear();
                     user.Clear();
@@ -154,35 +156,49 @@ namespace DouSoGi
             }
         }
 
+        void set_edit()
+        {
+
+            for (int i = 0; i < 9; i++)
+            {
+                for (int j = 0; j < 7; j++)
+                {
+                    edittiles[i, j] = tiles[i, j];
+                }
+            }
+        }
+
         void enemy_turn() {
-            int bestMove = -99999;
+            int bestMove = -9999;
             for (int i = 0; i < enemy.Count(); i++)
             {
-                int bestVal = minimax(3, false, edittiles);
-                MessageBox.Show(bestVal+"");
+                int bestVal = minimax(3, true, edittiles);
+                
                 if (bestVal > bestMove)
                 {
                     bestMove = bestVal;
-                    possibility = enemy[i];
+                    emove = enemy[i];
                 }
+                MessageBox.Show(bestVal + "");
             }
-            b[possibility.Y/50,possibility.X/50].BackColor = Color.Cyan;
+            b[emove.Y / 50, emove.X / 50].BackColor = Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
         }
 
         //algoritma minimax
         int minimax(int depth, bool isMax, Tiles[,] maps) {
+            if (depth == 0)
+            {
+                return -evaluate(maps);
+            }
+
             if (isMax) {
-                if (depth == 0)
-                {
-                    return evaluate(maps);
-                }
-                int max = -99999;
+                int max = -9999;
                 for (int i = 0; i < enemy.Count(); i++)
                 {
                     generate_move(enemy[i], maps);
                     for (int j = 0; j< listMove.Count; j++) {
                         maps[listMove[j].Y / 50, listMove[j].X / 50] = enemy[i];
-                        //maps[enemy[i].Y / 50, enemy[i].X / 50] = new Tiles(enemy[i].X, enemy[i].Y, "grass", false, false, Image.FromFile("grass.jpg"));
+                        maps[enemy[i].Y / 50, enemy[i].X / 50] = new Tiles(enemy[i].X, enemy[i].Y, "grass", false, false, Image.FromFile("grass.jpg"));
                         max = Math.Max(max, minimax(depth - 1, false, maps));
                     }
                     listMove.Clear();
@@ -190,25 +206,20 @@ namespace DouSoGi
                 return max;
             }
             else {
-                if (depth == 0)
-                {
-                    return -evaluate(maps);
-                }
-                int min = 99999;
+                int min = 9999;
                 for (int i = 0; i < user.Count(); i++)
                 {
                     generate_move(user[i], maps);
                     for (int j = 0; j < listMove.Count; j++)
                     {
                         maps[listMove[j].Y / 50, listMove[j].X / 50] = user[i];
-                        //maps[user[i].Y / 50, user[i].X / 50] = new Tiles(user[i].X, user[i].Y, "grass", false, false, Image.FromFile("grass.jpg"));
-                        min = Math.Min(min, minimax(depth - 1, false, maps));
+                        maps[user[i].Y / 50, user[i].X / 50] = new Tiles(user[i].X, user[i].Y, "grass", false, false, Image.FromFile("grass.jpg"));
+                        min = Math.Min(min, minimax(depth - 1, true, maps));
                     }
                     listMove.Clear();
                 }
                 return min;
             }
-            
         }
         //evaluasi papan di akhir depth
         int evaluate(Tiles[,] maps) {
@@ -568,7 +579,13 @@ namespace DouSoGi
             player = true;
             turnstrip.Text = "Player : Red";
             us_or_foe();
+            set_edit();
             enemy_turn();
+            enemy.Clear();
+            user.Clear();
+            us_or_foe();
+
+            refresh_button();
         }
 
         public void us_or_foe() {
