@@ -109,6 +109,14 @@ namespace DouSoGi
                             }
                         }
                     }
+                    else if (tiles[Y, X].Ismoveable)
+                    {
+                        //musuh
+                        if(tiles[Y, X].Isplayer == false) //kalau mau makan
+                        {
+
+                        }
+                    }
                     else{
                         if (tiles[Y, X].Value == "den" && tiles[Y, X].Isplayer != player) {
                             MessageBox.Show("Player wins!");
@@ -219,10 +227,10 @@ namespace DouSoGi
                     //turn musuh
 
                     set_edit();
-                    enemy_turn();
-                    enemy.Clear();
-                    user.Clear();
-                    us_or_foe();
+                    //enemy_turn();
+                    //enemy.Clear();
+                    //user.Clear();
+                    //us_or_foe();
 
                     refresh_button();
                     Isclicked = false;
