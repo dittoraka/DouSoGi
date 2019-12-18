@@ -108,22 +108,99 @@ namespace DouSoGi
                                 b[Y, X].BackColor = Color.Red;
                             }
                         }
-                        //tiles[Y, X] = new Tiles(X * 50, Y * 50, tiles[ytemp, xtemp].Value, true, player, tiles[ytemp, xtemp].Animal);
-                        //tiles[ytemp, xtemp].Animal = Image.FromFile("grass.jpg");
-                        //if (tiles[Y, X].Isplayer == false)
-                        //{
-                        //    b[Y, X].BackColor = Color.Blue;
-                        //}
-                        //else
-                        //{
-                        //    b[Y, X].BackColor = Color.Red;
-                        //}
-                        //tiles[ytemp, xtemp].Value = "grass";
-                        //tiles[ytemp, xtemp].Ismoveable = false;
-                        //tiles[ytemp, xtemp].Isplayer = false;
-                        //b[Y, X].BackgroundImage = tiles[Y, X].Animal;
                     }
                     else{
+                        if (tiles[Y, X].Value == "den" && tiles[Y, X].Isplayer != player) {
+                            MessageBox.Show("Player wins!");
+                        }
+                        else if (tiles[Y, X].Value == "trap" && tiles[Y, X].Isplayer != player) {
+                            tiles[Y, X] = new Tiles(X * 50, Y * 50, "grass", false, false, Image.FromFile("grass.jpg"));
+                            tiles[ytemp, xtemp].Animal = Image.FromFile("grass.jpg");
+                            tiles[ytemp, xtemp].Value = "grass";
+                            tiles[ytemp, xtemp].Ismoveable = false;
+                            tiles[ytemp, xtemp].Isplayer = false;
+                            b[Y, X].BackgroundImage = tiles[Y, X].Animal;
+                            if (tiles[Y, X].Isplayer == false)
+                            {
+                                b[Y, X].BackColor = Color.Blue;
+                            }
+                            else
+                            {
+                                b[Y, X].BackColor = Color.Red;
+                            }
+                        }
+                        else if (tiles[ytemp, xtemp].Value == "rat" && tiles[Y, X].Value == "water")
+                        { //water check
+                            if (tiles[ytemp - 1, xtemp].Value != "water")
+                            {
+                                tiles[Y, X] = new Tiles(X * 50, Y * 50, tiles[ytemp, xtemp].Value, true, player, tiles[ytemp, xtemp].Animal);
+                                tiles[ytemp, xtemp].Animal = Image.FromFile("grass.jpg");
+                                tiles[ytemp, xtemp].Value = "grass";
+                                tiles[ytemp, xtemp].Ismoveable = false;
+                                tiles[ytemp, xtemp].Isplayer = false;
+                                b[Y, X].BackgroundImage = tiles[Y, X].Animal;
+                                if (tiles[Y, X].Isplayer == false)
+                                {
+                                    b[Y, X].BackColor = Color.Blue;
+                                }
+                                else
+                                {
+                                    b[Y, X].BackColor = Color.Red;
+                                }
+                            }
+                            else {
+                                tiles[Y, X] = new Tiles(X * 50, Y * 50, tiles[ytemp, xtemp].Value, true, player, tiles[ytemp, xtemp].Animal);
+                                tiles[ytemp, xtemp].Animal = Image.FromFile("water.jpg");
+                                tiles[ytemp, xtemp].Value = "water";
+                                tiles[ytemp, xtemp].Ismoveable = false;
+                                tiles[ytemp, xtemp].Isplayer = false;
+                                b[Y, X].BackgroundImage = tiles[Y, X].Animal;
+                                if (tiles[Y, X].Isplayer == false)
+                                {
+                                    b[Y, X].BackColor = Color.Blue;
+                                }
+                                else
+                                {
+                                    b[Y, X].BackColor = Color.Red;
+                                }
+                            }
+                        }
+                        else if (tiles[ytemp, xtemp].Value == "rat" && tiles[Y, X].Value == "elephant") {
+                            tiles[Y, X] = new Tiles(X * 50, Y * 50, tiles[ytemp, xtemp].Value, true, player, tiles[ytemp, xtemp].Animal);
+                            tiles[ytemp, xtemp].Animal = Image.FromFile("grass.jpg");
+                            tiles[ytemp, xtemp].Value = "grass";
+                            tiles[ytemp, xtemp].Ismoveable = false;
+                            tiles[ytemp, xtemp].Isplayer = false;
+                            b[Y, X].BackgroundImage = tiles[Y, X].Animal;
+                            if (tiles[Y, X].Isplayer == false)
+                            {
+                                b[Y, X].BackColor = Color.Blue;
+                            }
+                            else
+                            {
+                                b[Y, X].BackColor = Color.Red;
+                            }
+                        }/*
+                        else if ((tiles[ytemp, xtemp].Value == "tiger" || tiles[ytemp, xtemp].Value == "lion") && tiles[Y, X].Value == "water")
+                        {
+                            
+                        }*/
+                        else if (get_value(tiles[ytemp, xtemp].Value) > get_value(tiles[Y, X].Value)) {
+                            tiles[Y, X] = new Tiles(X * 50, Y * 50, tiles[ytemp, xtemp].Value, true, player, tiles[ytemp, xtemp].Animal);
+                            tiles[ytemp, xtemp].Animal = Image.FromFile("grass.jpg");
+                            tiles[ytemp, xtemp].Value = "grass";
+                            tiles[ytemp, xtemp].Ismoveable = false;
+                            tiles[ytemp, xtemp].Isplayer = false;
+                            b[Y, X].BackgroundImage = tiles[Y, X].Animal;
+                            if (tiles[Y, X].Isplayer == false)
+                            {
+                                b[Y, X].BackColor = Color.Blue;
+                            }
+                            else
+                            {
+                                b[Y, X].BackColor = Color.Red;
+                            }
+                        }
                         /*
                         if (winmoves(tiles[ytemp, xtemp], tiles[Y, X]))
                         {
