@@ -90,7 +90,7 @@ namespace DouSoGi
                     else
                     {
                         //musuh
-                        if (get_value(tiles[Y, X].Value) < get_value(tiles[ytemp, xtemp].Value))
+                        if (get_value(tiles[Y, X].Value) <= get_value(tiles[ytemp, xtemp].Value))
                         {
                             //makan
                             tiles[Y, X] = new Tiles(X * 50, Y * 50, tiles[ytemp, xtemp].Value, true, player, tiles[ytemp, xtemp].Animal);
