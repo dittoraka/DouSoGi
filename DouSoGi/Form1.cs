@@ -87,6 +87,46 @@ namespace DouSoGi
                             ytemp = -1;
                         }
                     }
+                    else
+                    {
+                        //musuh
+                        if (get_value(tiles[Y, X].Value) < get_value(tiles[ytemp, xtemp].Value))
+                        {
+                            //makan
+                            tiles[Y, X] = new Tiles(X * 50, Y * 50, tiles[ytemp, xtemp].Value, true, player, tiles[ytemp, xtemp].Animal);
+                            tiles[ytemp, xtemp].Animal = Image.FromFile("grass.jpg");
+                            tiles[ytemp, xtemp].Value = "grass";
+                            tiles[ytemp, xtemp].Ismoveable = false;
+                            tiles[ytemp, xtemp].Isplayer = false;
+                            b[Y, X].BackgroundImage = tiles[Y, X].Animal;
+                            if (tiles[Y, X].Isplayer == false)
+                            {
+                                b[Y, X].BackColor = Color.Blue;
+                            }
+                            else
+                            {
+                                b[Y, X].BackColor = Color.Red;
+                            }
+                        }
+                        else if (tiles[Y, X].Value == "elephant" && tiles[ytemp, xtemp].Value == "rat")
+                        {
+                            //makan
+                            tiles[Y, X] = new Tiles(X * 50, Y * 50, tiles[ytemp, xtemp].Value, true, player, tiles[ytemp, xtemp].Animal);
+                            tiles[ytemp, xtemp].Animal = Image.FromFile("grass.jpg");
+                            tiles[ytemp, xtemp].Value = "grass";
+                            tiles[ytemp, xtemp].Ismoveable = false;
+                            tiles[ytemp, xtemp].Isplayer = false;
+                            b[Y, X].BackgroundImage = tiles[Y, X].Animal;
+                            if (tiles[Y, X].Isplayer == false)
+                            {
+                                b[Y, X].BackColor = Color.Blue;
+                            }
+                            else
+                            {
+                                b[Y, X].BackColor = Color.Red;
+                            }
+                        }
+                    }
                 }
                 else
                 {
@@ -107,14 +147,7 @@ namespace DouSoGi
                             {
                                 b[Y, X].BackColor = Color.Red;
                             }
-                        }
-                    }
-                    else if (tiles[Y, X].Ismoveable)
-                    {
-                        //musuh
-                        if(tiles[Y, X].Isplayer == false) //kalau mau makan
-                        {
-
+                            mauJalan = false;
                         }
                     }
                     else{
