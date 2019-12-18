@@ -110,20 +110,36 @@ namespace DouSoGi
                         }
                         else if (tiles[Y, X].Value == "elephant" && tiles[ytemp, xtemp].Value == "rat")
                         {
-                            //makan
-                            tiles[Y, X] = new Tiles(X * 50, Y * 50, tiles[ytemp, xtemp].Value, true, player, tiles[ytemp, xtemp].Animal);
-                            tiles[ytemp, xtemp].Animal = Image.FromFile("grass.jpg");
-                            tiles[ytemp, xtemp].Value = "grass";
-                            tiles[ytemp, xtemp].Ismoveable = false;
-                            tiles[ytemp, xtemp].Isplayer = false;
-                            b[Y, X].BackgroundImage = tiles[Y, X].Animal;
-                            if (tiles[Y, X].Isplayer == false)
+                            if (tiles[ytemp, xtemp].diair)
                             {
-                                b[Y, X].BackColor = Color.Blue;
+                                //tidak bisa makan kalo tikus di air
+                                MessageBox.Show("tidak bisa makan kalau dari air");
+                                if (tiles[ytemp, xtemp].Isplayer == false)
+                                {
+                                    b[ytemp, xtemp].BackColor = Color.Blue;
+                                }
+                                else
+                                {
+                                    b[ytemp, xtemp].BackColor = Color.Red;
+                                }
                             }
                             else
                             {
-                                b[Y, X].BackColor = Color.Red;
+                                //tikus makan gajah
+                                tiles[Y, X] = new Tiles(X * 50, Y * 50, tiles[ytemp, xtemp].Value, true, player, tiles[ytemp, xtemp].Animal);
+                                tiles[ytemp, xtemp].Animal = Image.FromFile("grass.jpg");
+                                tiles[ytemp, xtemp].Value = "grass";
+                                tiles[ytemp, xtemp].Ismoveable = false;
+                                tiles[ytemp, xtemp].Isplayer = false;
+                                b[Y, X].BackgroundImage = tiles[Y, X].Animal;
+                                if (tiles[Y, X].Isplayer == false)
+                                {
+                                    b[Y, X].BackColor = Color.Blue;
+                                }
+                                else
+                                {
+                                    b[Y, X].BackColor = Color.Red;
+                                }
                             }
                         }
                         refresh_button();
@@ -173,6 +189,18 @@ namespace DouSoGi
                                             b[Y, X].BackColor = Color.Red;
                                         }
                                         mauJalan = false;
+                                    }
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Binatang ini tidak boleh masuk ke air");
+                                    if (tiles[ytemp, xtemp].Isplayer == false)
+                                    {
+                                        b[ytemp, xtemp].BackColor = Color.Blue;
+                                    }
+                                    else
+                                    {
+                                        b[ytemp, xtemp].BackColor = Color.Red;
                                     }
                                 }
                                 tiles[Y, X].diair = true;
@@ -329,10 +357,10 @@ namespace DouSoGi
                     //turn musuh
 
                     set_edit();
-                    //enemy_turn();
-                    //enemy.Clear();
-                    //user.Clear();
-                    //us_or_foe();
+                    enemy_turn();
+                    enemy.Clear();
+                    user.Clear();
+                    us_or_foe();
 
                     refresh_button();
                     Isclicked = false;
