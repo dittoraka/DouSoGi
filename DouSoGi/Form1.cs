@@ -126,6 +126,7 @@ namespace DouSoGi
                                 b[Y, X].BackColor = Color.Red;
                             }
                         }
+                        refresh_button();
                     }
                 }
                 else
@@ -133,21 +134,89 @@ namespace DouSoGi
                     if (tiles[Y, X].Ismoveable == false) {
                         if (mauJalan)
                         {
-                            tiles[Y, X] = new Tiles(X * 50, Y * 50, tiles[ytemp, xtemp].Value, true, player, tiles[ytemp, xtemp].Animal);
-                            tiles[ytemp, xtemp].Animal = Image.FromFile("grass.jpg");
-                            tiles[ytemp, xtemp].Value = "grass";
-                            tiles[ytemp, xtemp].Ismoveable = false;
-                            tiles[ytemp, xtemp].Isplayer = false;
-                            b[Y, X].BackgroundImage = tiles[Y, X].Animal;
-                            if (tiles[Y, X].Isplayer == false)
+                            if (tiles[Y, X].Value == "water")
                             {
-                                b[Y, X].BackColor = Color.Blue;
+                                if (tiles[ytemp, xtemp].Value == "rat")
+                                {
+                                    if (tiles[ytemp, xtemp].diair == true)
+                                    {
+                                        tiles[Y, X] = new Tiles(X * 50, Y * 50, tiles[ytemp, xtemp].Value, true, player, tiles[ytemp, xtemp].Animal);
+                                        tiles[ytemp, xtemp].Animal = Image.FromFile("water.jpg");
+                                        tiles[ytemp, xtemp].Value = "water";
+                                        tiles[ytemp, xtemp].Ismoveable = false;
+                                        tiles[ytemp, xtemp].Isplayer = false;
+                                        b[Y, X].BackgroundImage = tiles[Y, X].Animal;
+                                        if (tiles[Y, X].Isplayer == false)
+                                        {
+                                            b[Y, X].BackColor = Color.Blue;
+                                        }
+                                        else
+                                        {
+                                            b[Y, X].BackColor = Color.Red;
+                                        }
+                                        mauJalan = false;
+                                    }
+                                    else
+                                    {
+                                        tiles[Y, X] = new Tiles(X * 50, Y * 50, tiles[ytemp, xtemp].Value, true, player, tiles[ytemp, xtemp].Animal);
+                                        tiles[ytemp, xtemp].Animal = Image.FromFile("grass.jpg");
+                                        tiles[ytemp, xtemp].Value = "grass";
+                                        tiles[ytemp, xtemp].Ismoveable = false;
+                                        tiles[ytemp, xtemp].Isplayer = false;
+                                        b[Y, X].BackgroundImage = tiles[Y, X].Animal;
+                                        if (tiles[Y, X].Isplayer == false)
+                                        {
+                                            b[Y, X].BackColor = Color.Blue;
+                                        }
+                                        else
+                                        {
+                                            b[Y, X].BackColor = Color.Red;
+                                        }
+                                        mauJalan = false;
+                                    }
+                                }
+                                tiles[Y, X].diair = true;
                             }
                             else
                             {
-                                b[Y, X].BackColor = Color.Red;
+                                if (tiles[ytemp, xtemp].diair == true)
+                                {
+                                    tiles[Y, X] = new Tiles(X * 50, Y * 50, tiles[ytemp, xtemp].Value, true, player, tiles[ytemp, xtemp].Animal);
+                                    tiles[ytemp, xtemp].Animal = Image.FromFile("water.jpg");
+                                    tiles[ytemp, xtemp].Value = "water";
+                                    tiles[ytemp, xtemp].Ismoveable = false;
+                                    tiles[ytemp, xtemp].Isplayer = false;
+                                    b[Y, X].BackgroundImage = tiles[Y, X].Animal;
+                                    if (tiles[Y, X].Isplayer == false)
+                                    {
+                                        b[Y, X].BackColor = Color.Blue;
+                                    }
+                                    else
+                                    {
+                                        b[Y, X].BackColor = Color.Red;
+                                    }
+                                    mauJalan = false;
+                                }
+                                else
+                                {
+                                    tiles[Y, X] = new Tiles(X * 50, Y * 50, tiles[ytemp, xtemp].Value, true, player, tiles[ytemp, xtemp].Animal);
+                                    tiles[ytemp, xtemp].Animal = Image.FromFile("grass.jpg");
+                                    tiles[ytemp, xtemp].Value = "grass";
+                                    tiles[ytemp, xtemp].Ismoveable = false;
+                                    tiles[ytemp, xtemp].Isplayer = false;
+                                    b[Y, X].BackgroundImage = tiles[Y, X].Animal;
+                                    if (tiles[Y, X].Isplayer == false)
+                                    {
+                                        b[Y, X].BackColor = Color.Blue;
+                                    }
+                                    else
+                                    {
+                                        b[Y, X].BackColor = Color.Red;
+                                    }
+                                    mauJalan = false;
+                                }
+                                tiles[Y, X].diair = false;
                             }
-                            mauJalan = false;
                         }
                     }
                     else{

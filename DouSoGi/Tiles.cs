@@ -14,6 +14,7 @@ namespace DouSoGi
         private bool ismoveable;
         private bool isplayer;
         private Image animal;
+        public bool diair;
 
         public Tiles(int x, int y, string value, bool ismoveable, bool isplayer, Image animal)
         {
@@ -23,6 +24,7 @@ namespace DouSoGi
             this.ismoveable = ismoveable;
             this.isplayer = isplayer;
             this.animal = animal;
+            this.diair = false;
         }
         
 
